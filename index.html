@@ -1,41 +1,99 @@
-<!DOCTYPE html><html lang='ko'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1'>
-<title>수능 카운트다운 V3</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{height:100vh;display:flex;justify-content:center;align-items:center;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR",sans-serif;background:radial-gradient(circle at top,#1b2945,#101722 45%,#0d1117);color:#fff;overflow:hidden}
-.card{width:min(760px,92%);padding:48px;border:1px solid rgba(255,255,255,.08);border-radius:28px;background:rgba(255,255,255,.05);backdrop-filter:blur(18px);text-align:center;animation:f .8s}
-@keyframes f{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-h1{font-size:28px;margin-bottom:34px;font-weight:600}
-#dday{font-size:110px;font-weight:800;line-height:1}
-#days{font-size:60px;margin-top:10px}
-#time{font-size:36px;color:#d5dbe6;margin:28px 0 52px;font-variant-numeric:tabular-nums}
-.labels{display:flex;justify-content:space-between;color:#8b949e;font-size:14px;margin-bottom:12px}
-.bar{height:12px;background:#2c3440;border-radius:999px;position:relative}
-.fill{height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,#3b82f6,#60a5fa);transition:width .8s linear}
-.dot{position:absolute;top:50%;left:0;width:22px;height:22px;border-radius:50%;background:#60a5fa;transform:translate(-50%,-50%);transition:left .8s linear;animation:pulse 2s infinite;box-shadow:0 0 12px rgba(96,165,250,.8)}
-@keyframes pulse{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.18)}}
-#percent{margin-top:16px;color:#9aa4b2}
-.footer{margin-top:40px;color:#7f8895}
-</style></head><body><div class='card'>
-<h1>📚 수능까지</h1>
-<div id='dday'></div><div id='days'></div><div id='time'></div>
-<div class='labels'><span>2026학년도 수능</span><span>2027학년도 수능</span></div>
-<div class='bar'><div id='fill' class='fill'></div><div id='dot' class='dot'></div></div>
-<div id='percent'></div>
-<div class='footer'>2026.11.19 (목) 08:10 입실 마감</div>
-</div>
-<script>
-const start=new Date("2025-11-13T08:10:00"),end=new Date("2026-11-19T08:10:00");
-const dday=dday=document.getElementById("dday"),days=document.getElementById("days"),time=document.getElementById("time"),fill=document.getElementById("fill"),dot=document.getElementById("dot"),percent=document.getElementById("percent");
-function pad(n){return String(n).padStart(2,"0")}
-function u(){
-const now=new Date(),r=end-now;
-if(r<=0){dday.textContent="D-DAY";days.textContent="0일";time.textContent="수능 시작!";return;}
-const D=Math.ceil(r/86400000),d=Math.floor(r/86400000);
-let t=r%86400000,h=Math.floor(t/3600000);t%=3600000;let m=Math.floor(t/60000);t%=60000;let s=Math.floor(t/1000);
-dday.textContent="D-"+D;days.textContent=d+"일";time.textContent=`${pad(h)}시간 ${pad(m)}분 ${pad(s)}초 남았습니다`;
-let p=Math.max(0,Math.min(100,((now-start)/(end-start))*100));
-fill.style.width=p+"%";dot.style.left=p+"%";percent.textContent=p.toFixed(1)+"% 완료";
-}
-u();setInterval(u,1000);
-</script></body></html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0b1220">
+
+    <title>수능 카운트다운</title>
+
+    <!-- PWA 준비 -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- iPhone -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="수능">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<main class="app">
+
+    <p class="title">2027학년도 수능</p>
+
+    <section class="countdown">
+
+        <h1 id="dday">
+            D-000
+        </h1>
+
+        <h2 id="days">
+            000일
+        </h2>
+
+        <p id="time">
+            00시간 00분 00초 남았습니다
+        </p>
+
+    </section>
+
+    <section class="progress-section">
+
+        <div class="progress-label">
+
+            <span>
+                2026학년도 수능
+            </span>
+
+            <span>
+                2027학년도 수능
+            </span>
+
+        </div>
+
+        <div class="progress-bar">
+
+            <div
+                id="progressFill"
+                class="progress-fill">
+            </div>
+
+            <div
+                id="progressThumb"
+                class="progress-thumb">
+            </div>
+
+        </div>
+
+        <div
+            id="progressPercent"
+            class="progress-percent">
+            0.0%
+        </div>
+
+    </section>
+
+    <footer>
+
+        <p>
+            2026.11.19 (목)
+        </p>
+
+        <p>
+            08:10 입실 마감
+        </p>
+
+    </footer>
+
+</main>
+
+<script src="script.js"></script>
+
+</body>
+</html>
